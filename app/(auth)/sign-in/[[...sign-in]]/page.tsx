@@ -16,7 +16,7 @@ export default function Page() {
           <Loader2 className="animate-spin text-muted-foreground w-10 h-10" />
         </ClerkLoading>
       </div>
-      <div className="bg-blue-900 hidden lg:flex items-center justify-center">
+      <div className="bg-primary hidden lg:flex items-center justify-center">
         <Image src="/logo.svg" width={150} height={150} priority alt="logo" />
       </div>
     </div>

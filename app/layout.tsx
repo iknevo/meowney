@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s / nevotax",
-    default: "Dashboard / nevotax",
+    template: "%s / Meowney",
+    default: "Dashboard / Meowney",
   },
   description: "Handle and manage all your finances in one place.",
 };
