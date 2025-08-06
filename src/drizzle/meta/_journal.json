@@ -15,6 +15,20 @@
       "when": 1754466656963,
       "tag": "0001_left_longshot",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1754492413784,
+      "tag": "0002_sour_dakota_north",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1754492532788,
+      "tag": "0003_colorful_wild_pack",
+      "breakpoints": true
     }
   ]
 }
