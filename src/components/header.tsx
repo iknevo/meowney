@@ -1,5 +1,5 @@
-import HeaderLogo from "@/components/header-logo";
-import Navigation from "@/components/navigation";
+import HeaderLogo from "@/src/components/header-logo";
+import Navigation from "@/src/components/navigation";
 import { ClerkLoaded, ClerkLoading, UserButton } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
 import WelcomeMsg from "./welcome-msg";

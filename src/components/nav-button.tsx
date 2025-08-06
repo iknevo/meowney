@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from "@/src/components/ui/button";
+import { cn } from "@/src/lib/utils";
 import Link from "next/link";
 
 type Props = {

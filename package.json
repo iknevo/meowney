@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:generate": "drizzle-kit generate --dialect=postgresql --schema=db/schema.ts --out=./drizzle",
-    "db:migrate": "tsx ./db/scripts/migrate.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:generate": "drizzle-kit generate --dialect=postgresql --schema=src/db/schema.ts --out=./drizzle",
+    "db:migrate": "tsx ./src/db/scripts/migrate.ts",
+    "db:studio": "drizzle-kit studio",
+    "gitpush": "powershell -Command \"git add .; git commit -m \\\"$args[0]\\\"; git push origin master\""
   },
   "dependencies": {
     "@clerk/nextjs": "^6.28.1",

@@ -1,5 +1,5 @@
-import { db } from "@/db/dirzzle";
-import { accounts } from "@/db/schema";
+import { db } from "@/src/db/dirzzle";
+import { accounts } from "@/src/db/schema";
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";

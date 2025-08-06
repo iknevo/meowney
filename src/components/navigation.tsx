@@ -1,6 +1,6 @@
 "use client";
-import NavButton from "@/components/nav-button";
-import { routes } from "@/lib/constants";
+import NavButton from "@/src/components/nav-button";
+import { routes } from "@/src/lib/constants";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Menu } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";

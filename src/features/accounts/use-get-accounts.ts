@@ -1,4 +1,4 @@
-import { client } from "@/lib/hono";
+import { client } from "@/src/lib/hono";
 import { useQuery } from "@tanstack/react-query";
 
 export function useGetAccounts() {
