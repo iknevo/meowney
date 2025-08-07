@@ -79,7 +79,7 @@ export default function AccountForm({
             disabled={disabled}
             onClick={handleDelete}
           >
-            <Trash className="mr-2 size-4" />
+            <Trash className="size-4" />
             <span>Delete Account</span>
           </Button>
         )}
