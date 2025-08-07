@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 import {
   Sheet,
   SheetContent,
@@ -5,10 +7,30 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/src/components/ui/sheet";
-import { useNewAccount } from "../hooks/use-new-account";
+import { insertAccountSchema } from "@/src/db/schema";
+import { useCreateAccount } from "../api/use-create-account";
+import { useNewAccount } from "../state/use-new-account";
+import AccountForm from "./account-form";
 
-export default function NewAccountSheet() {
+const formSchema = insertAccountSchema.pick({
+  name: true,
+});
+
+type FormValues = z.input<typeof formSchema>;
+
+export const NewAccountSheet = () => {
   const { isOpen, onClose } = useNewAccount();
+
+  const { mutate: createAccount, isPending } = useCreateAccount();
+
+  const onSubmit = (values: FormValues) => {
+    createAccount(values, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
+  };
+
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="space-y-4">
@@ -18,7 +40,14 @@ export default function NewAccountSheet() {
             Create a new account to track your transactions.
           </SheetDescription>
         </SheetHeader>
+        <AccountForm
+          onSubmit={onSubmit}
+          disabled={isPending}
+          defaultValues={{
+            name: "",
+          }}
+        />
       </SheetContent>
     </Sheet>
   );
-}
+};

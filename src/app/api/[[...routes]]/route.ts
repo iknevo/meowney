@@ -8,7 +8,9 @@ const app = new Hono().basePath("/api");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const routes = app.route("/accounts", accounts);
 
-export const GET = handle(app);
-export const POST = handle(app);
+const handler = handle(app);
+export const GET = handler;
+export const POST = handler;
 
+export default app;
 export type AppTypes = typeof routes;
