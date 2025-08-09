@@ -6,7 +6,9 @@ import { hcWithType } from "@/src/lib/hono";
 import { ColumnDef } from "@tanstack/react-table";
 import { InferResponseType } from "hono";
 import { ArrowUpDown } from "lucide-react";
+import Actions from "./actions";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const client = hcWithType(appURL);
 export type ResponseType = InferResponseType<
   typeof client.api.accounts.$get,
@@ -49,5 +51,10 @@ export const columns: ColumnDef<ResponseType>[] = [
         </Button>
       );
     },
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => <Actions id={row.original.id} />,
   },
 ];

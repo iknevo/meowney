@@ -16,7 +16,7 @@ const app = new Hono()
       // throw new HTTPException(401, {
       //   res: c.json({ error: "Unauthorized" } as const, 401),
       // });
-      return c.json({ error: "Unauthorized" } as const, 401);
+      return c.json({ error: "Unauthorized" }, 401);
     }
     const data = await db
       .select({
@@ -30,6 +30,34 @@ const app = new Hono()
       data,
     });
   })
+  .get(
+    "/:id",
+    zValidator(
+      "param",
+      z.object({
+        id: z.string().optional(),
+      }),
+    ),
+    clerkMiddleware(),
+    async (c) => {
+      const auth = getAuth(c);
+      const { id } = c.req.valid("param");
+      if (!id) {
+        return c.json({ error: "Missing account id" }, 400);
+      }
+      if (!auth?.userId) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+      const [data] = await db
+        .select({ id: accounts.id, name: accounts.name })
+        .from(accounts)
+        .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)));
+      if (!data) {
+        return c.json({ error: "Not Found" }, 404);
+      }
+      return c.json({ data });
+    },
+  )
   .post(
     "/",
     clerkMiddleware(),
@@ -43,7 +71,7 @@ const app = new Hono()
       const auth = getAuth(c);
       const values = c.req.valid("json");
       if (!auth?.userId) {
-        return c.json({ error: "Unauthorized" } as const, 401);
+        return c.json({ error: "Unauthorized" }, 401);
       }
       const [data] = await db
         .insert(accounts)
@@ -70,7 +98,7 @@ const app = new Hono()
       const auth = getAuth(c);
       const { ids } = c.req.valid("json");
       if (!auth?.userId) {
-        return c.json({ error: "Unauthorized" } as const, 401);
+        return c.json({ error: "Unauthorized" }, 401);
       }
       const data = await db
         .delete(accounts)

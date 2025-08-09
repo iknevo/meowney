@@ -6,9 +6,11 @@ import {
   SheetTitle,
 } from "@/src/components/ui/sheet";
 import { insertAccountSchema } from "@/src/db/schema";
+import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import { useCreateAccount } from "../api/use-create-account";
-import { useNewAccount } from "../state/use-new-account";
+import { useGetAccount } from "../api/use-get-account";
+import { useOpenAccount } from "../state/use-open-account";
 import AccountForm from "./account-form";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -18,10 +20,11 @@ const formSchema = insertAccountSchema.pick({
 
 type FormValues = z.input<typeof formSchema>;
 
-export const NewAccountSheet = () => {
-  const { isOpen, onClose } = useNewAccount();
-
+export const EditAccountSheet = () => {
+  const { isOpen, onClose, id } = useOpenAccount();
+  const { data: account, isLoading } = useGetAccount(id);
   const { mutate: createAccount, isPending } = useCreateAccount();
+  const defaultValues = account ? { name: account.name } : { name: "" };
 
   const onSubmit = (values: FormValues) => {
     createAccount(values, {
@@ -35,18 +38,21 @@ export const NewAccountSheet = () => {
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="space-y-4">
         <SheetHeader>
-          <SheetTitle>New Account</SheetTitle>
-          <SheetDescription>
-            Create a new account to track your transactions.
-          </SheetDescription>
+          <SheetTitle>Edit Account</SheetTitle>
+          <SheetDescription>Edit an existing account</SheetDescription>
         </SheetHeader>
-        <AccountForm
-          onSubmit={onSubmit}
-          disabled={isPending}
-          defaultValues={{
-            name: "",
-          }}
-        />
+        {isLoading ? (
+          <div className="flex items-center justify-center">
+            <Loader2 className="text-muted-foreground size-8 animate-spin" />
+          </div>
+        ) : (
+          <AccountForm
+            id={id}
+            onSubmit={onSubmit}
+            disabled={isPending}
+            defaultValues={defaultValues}
+          />
+        )}
       </SheetContent>
     </Sheet>
   );

@@ -11,6 +11,7 @@ const routes = app.route("/accounts", accounts);
 const handler = handle(app);
 export const GET = handler;
 export const POST = handler;
+export const PATCH = handler;
 
 export default app;
 export type AppTypes = typeof routes;
