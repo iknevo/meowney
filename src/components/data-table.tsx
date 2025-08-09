@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
+import useConfirm from "@/src/hooks/use-confirm";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -23,7 +24,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Trash } from "lucide-react";
-import * as React from "react";
+import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -40,11 +41,13 @@ export function DataTable<TData, TValue>({
   onDelete,
   disabled,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [ConfirmDialog, confirm] = useConfirm({
+    title: "Are You Sure?",
+    message: "You are about to perform a bulk Delete.",
+  });
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
     data,
     columns,
@@ -64,6 +67,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
+      <ConfirmDialog />
       <div className="flex items-center py-4">
         <Input
           placeholder={`Filter by ${filterKey}...`}
@@ -79,6 +83,13 @@ export function DataTable<TData, TValue>({
             className="ml-auto text-sm font-normal"
             variant={"outline"}
             size={"sm"}
+            onClick={async () => {
+              const ok = await confirm();
+              if (ok) {
+                onDelete(table.getFilteredSelectedRowModel().rows);
+                table.resetRowSelection();
+              }
+            }}
           >
             <Trash className="size-4" />
             <span>

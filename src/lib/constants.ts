@@ -20,3 +20,4 @@ export const routes = [
     label: "Settings",
   },
 ];
+export const appURL = process.env.NEXT_PUBLIC_APP_URL!;
