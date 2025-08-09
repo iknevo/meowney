@@ -8,7 +8,7 @@ import {
 import { insertAccountSchema } from "@/src/db/schema";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";
-import { useCreateAccount } from "../api/use-create-account";
+import { useEditAccount } from "../api/use-edit-account";
 import { useGetAccount } from "../api/use-get-account";
 import { useOpenAccount } from "../state/use-open-account";
 import AccountForm from "./account-form";
@@ -23,11 +23,12 @@ type FormValues = z.input<typeof formSchema>;
 export const EditAccountSheet = () => {
   const { isOpen, onClose, id } = useOpenAccount();
   const { data: account, isLoading } = useGetAccount(id);
-  const { mutate: createAccount, isPending } = useCreateAccount();
+  const { mutate: updateAccount, isPending: isUpdating } = useEditAccount(id);
   const defaultValues = account ? { name: account.name } : { name: "" };
+  const isPending = isUpdating;
 
   const onSubmit = (values: FormValues) => {
-    createAccount(values, {
+    updateAccount(values, {
       onSuccess: () => {
         onClose();
       },

@@ -1,10 +1,8 @@
-import { appURL } from "@/src/lib/constants";
-import { hcWithType } from "@/src/lib/hono";
+import { client } from "@/src/lib/hono";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { toast } from "sonner";
 
-const client = hcWithType(appURL);
 type ResponseType = InferResponseType<typeof client.api.accounts.$post>;
 type RequestType = InferRequestType<typeof client.api.accounts.$post>["json"];
 

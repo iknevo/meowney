@@ -1,8 +1,6 @@
-import { appURL } from "@/src/lib/constants";
-import { hcWithType } from "@/src/lib/hono";
+import { client } from "@/src/lib/hono";
 import { useQuery } from "@tanstack/react-query";
 
-const client = hcWithType(appURL);
 export function useGetAccounts() {
   const query = useQuery({
     queryKey: ["accounts"],

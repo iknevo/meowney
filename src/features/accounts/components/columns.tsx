@@ -1,15 +1,12 @@
 "use client";
 import { Button } from "@/src/components/ui/button";
 import { Checkbox } from "@/src/components/ui/checkbox";
-import { appURL } from "@/src/lib/constants";
-import { hcWithType } from "@/src/lib/hono";
+import { client } from "@/src/lib/hono";
 import { ColumnDef } from "@tanstack/react-table";
 import { InferResponseType } from "hono";
 import { ArrowUpDown } from "lucide-react";
 import Actions from "./actions";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const client = hcWithType(appURL);
 export type ResponseType = InferResponseType<
   typeof client.api.accounts.$get,
   200
