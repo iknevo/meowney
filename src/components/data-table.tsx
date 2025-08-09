@@ -83,7 +83,7 @@ export function DataTable<TData, TValue>({
             onClick={async () => {
               const ok = await confirm({
                 title: "Are You Sure?",
-                message: "You are about deleting this account(s)",
+                message: "You are about deleting this account(s).",
               });
               if (ok) {
                 onDelete(table.getFilteredSelectedRowModel().rows);

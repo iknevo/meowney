@@ -3,10 +3,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
-import { Edit, MoreHorizontal } from "lucide-react";
+import useConfirm from "@/src/hooks/use-confirm";
+import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import { useDeleteAccount } from "../api/use-delete-account";
 import { useOpenAccount } from "../state/use-open-account";
 
 type Props = {
@@ -15,8 +16,22 @@ type Props = {
 
 export default function Actions({ id }: Props) {
   const { onOpen } = useOpenAccount();
+  const { mutate: deleteAccount, isPending } = useDeleteAccount(id);
+  const [ConfirmDialog, confirm] = useConfirm();
+
+  const handleDelete = async () => {
+    const ok = await confirm({
+      title: "Are You Sure?",
+      message: "You are about deleting this account.",
+    });
+    if (ok) {
+      deleteAccount();
+    }
+  };
+
   return (
     <>
+      <ConfirmDialog />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="size-8 p-0">
@@ -25,9 +40,13 @@ export default function Actions({ id }: Props) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem disabled={false} onClick={() => onOpen(id)}>
+          <DropdownMenuItem disabled={isPending} onClick={() => onOpen(id)}>
             <Edit className="size-4" />
             <span>Edit</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem disabled={isPending} onClick={handleDelete}>
+            <Trash className="size-4" />
+            <span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
