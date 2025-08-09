@@ -34,8 +34,8 @@ export default function Page() {
             <Skeleton className="h-8 w-48" />
           </CardHeader>
           <CardContent>
-            <div className="flex h-100 w-full items-center justify-center">
-              <Loader2 className="size-6 animate-spin text-slate-300" />
+            <div className="flex h-50 w-full items-center justify-center">
+              <Loader2 className="size-8 animate-spin text-slate-400" />
             </div>
           </CardContent>
         </Card>

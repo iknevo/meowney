@@ -21,8 +21,8 @@ export function useBulkDeleteAccounts() {
       return data;
     },
     onSuccess: () => {
-      toast.success("Accounts Deleted");
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      toast.success("Accounts Deleted");
       // todo: also validate summary
     },
     onError: (err) => {

@@ -9,41 +9,44 @@ import {
 import { JSX, useState } from "react";
 import { Button } from "../components/ui/button";
 
-type Props = {
+type Options = {
   title: string;
   message: string;
 };
-export default function useConfirm({
-  title,
-  message,
-}: Props): [() => JSX.Element, () => Promise<unknown>] {
-  const [promise, setPromise] = useState<{
-    resolve: (value: boolean) => void;
-  } | null>(null);
+export default function useConfirm(): [
+  () => JSX.Element,
+  ({ title, message }: Options) => Promise<boolean>,
+] {
+  const [promise, setPromise] = useState<((value: boolean) => void) | null>(
+    null,
+  );
+  const [options, setOptions] = useState<Options | null>(null);
 
-  function confirm() {
-    return new Promise((resolve) => {
-      setPromise({ resolve });
+  function confirm({ title, message }: Options) {
+    setOptions({ title, message });
+    return new Promise<boolean>((resolve) => {
+      setPromise(() => resolve);
     });
   }
   function handleClose() {
     setPromise(null);
+    setOptions(null);
   }
   function handleConfirm() {
-    promise?.resolve(true);
+    promise?.(true);
     handleClose();
   }
 
   function handleCancel() {
-    promise?.resolve(false);
+    promise?.(false);
     handleClose();
   }
   const ConfirmationDialog = () => (
-    <AlertDialog open={promise !== null}>
+    <AlertDialog open={!!promise}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{message}</AlertDialogDescription>
+          <AlertDialogTitle>{options?.title}</AlertDialogTitle>
+          <AlertDialogDescription>{options?.message}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="pt-2">
           <Button onClick={handleCancel} variant={"outline"}>

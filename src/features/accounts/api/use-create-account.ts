@@ -14,12 +14,11 @@ export function useCreateAccount() {
     mutationFn: async (json) => {
       const res = await client.api.accounts.$post({ json });
       const data = await res.json();
-      console.log(data, "data");
       return data;
     },
     onSuccess: () => {
-      toast.success("Account created");
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      toast.success("Account created");
     },
     onError: (err) => {
       console.error(err);
