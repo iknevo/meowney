@@ -1,12 +1,15 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 import accounts from "./accounts";
+import categories from "./categories";
 
 export const dynamic = "force-dynamic";
 const app = new Hono().basePath("/api");
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const routes = app.route("/accounts", accounts);
+const routes = app
+  .route("/accounts", accounts)
+  .route("/categories", categories);
 
 const handler = handle(app);
 export const GET = handler;

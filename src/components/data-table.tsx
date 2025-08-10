@@ -31,6 +31,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   filterKey: string;
   onDelete: (rows: Row<TData>[]) => void;
+  confirmOptions: { title: string; message: string };
   disabled?: boolean;
 }
 
@@ -39,6 +40,7 @@ export function DataTable<TData, TValue>({
   data,
   filterKey,
   onDelete,
+  confirmOptions,
   disabled,
 }: DataTableProps<TData, TValue>) {
   const [ConfirmDialog, confirm] = useConfirm();
@@ -82,8 +84,8 @@ export function DataTable<TData, TValue>({
             size={"sm"}
             onClick={async () => {
               const ok = await confirm({
-                title: "Are You Sure?",
-                message: "You are about deleting this account(s).",
+                title: confirmOptions.title,
+                message: confirmOptions.message,
               });
               if (ok) {
                 onDelete(table.getFilteredSelectedRowModel().rows);
