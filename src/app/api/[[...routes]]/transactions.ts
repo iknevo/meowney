@@ -1,5 +1,10 @@
 import { db } from "@/src/db/dirzzle";
-import { accounts, categories, insertTransactionSchema } from "@/src/db/schema";
+import {
+  accounts,
+  categories,
+  insertTransactionSchema,
+  transactions,
+} from "@/src/db/schema";
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { zValidator } from "@hono/zod-validator";
 import { parse, subDays } from "date-fns";
@@ -7,7 +12,6 @@ import { and, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
-import { transactions } from "../../../db/schema";
 
 const app = new Hono()
   .get(
