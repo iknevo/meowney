@@ -4,17 +4,17 @@ import { InferRequestType, InferResponseType } from "hono";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<
-  (typeof client.api.accounts)[":id"]["$patch"]
+  (typeof client.api.transactions)[":id"]["$patch"]
 >;
 type RequestType = InferRequestType<
-  (typeof client.api.accounts)[":id"]["$patch"]
+  (typeof client.api.transactions)[":id"]["$patch"]
 >["json"];
 
-export function useEditAccount(id?: string) {
+export function useEditTransaction(id?: string) {
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
-      const res = await client.api.accounts[":id"].$patch({
+      const res = await client.api.transactions[":id"].$patch({
         param: { id },
         json,
       });
@@ -22,14 +22,14 @@ export function useEditAccount(id?: string) {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["account", id] });
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-      toast.success("Account Updated");
-      // todo: update summary and transactions
+      queryClient.invalidateQueries({ queryKey: ["transaction", id] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      toast.success("Transaction Updated");
+      // todo: update summary
     },
     onError: (err) => {
       console.error(err);
-      toast.error("Failed to edit account");
+      toast.error("Failed to edit transaction");
     },
   });
 

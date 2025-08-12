@@ -3,33 +3,26 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { toast } from "sonner";
 
-type ResponseType = InferResponseType<
-  (typeof client.api.accounts)[":id"]["$patch"]
->;
+type ResponseType = InferResponseType<typeof client.api.transactions.$post>;
 type RequestType = InferRequestType<
-  (typeof client.api.accounts)[":id"]["$patch"]
+  typeof client.api.transactions.$post
 >["json"];
 
-export function useEditAccount(id?: string) {
+export function useCreateTransaction() {
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
-      const res = await client.api.accounts[":id"].$patch({
-        param: { id },
-        json,
-      });
+      const res = await client.api.transactions.$post({ json });
       const data = await res.json();
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["account", id] });
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-      toast.success("Account Updated");
-      // todo: update summary and transactions
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      toast.success("Transaction created");
     },
     onError: (err) => {
       console.error(err);
-      toast.error("Failed to edit account");
+      toast.error("Failed to create transaction");
     },
   });
 
