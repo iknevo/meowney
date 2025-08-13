@@ -19,8 +19,9 @@ export function useDeleteCategory(id?: string) {
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["category", id] });
       queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
       toast.success("Category Deleted");
-      // todo: update summary and transactions
+      // todo: update summary
     },
     onError: (err) => {
       console.error(err);

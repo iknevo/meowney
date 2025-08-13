@@ -24,8 +24,9 @@ export function useEditAccount(id?: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["account", id] });
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
       toast.success("Account Updated");
-      // todo: update summary and transactions
+      // todo: update summary
     },
     onError: (err) => {
       console.error(err);

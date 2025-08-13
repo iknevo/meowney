@@ -7,16 +7,16 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 import useConfirm from "@/src/hooks/use-confirm";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
-import { useDeleteAccount } from "../api/use-delete-account";
-import { useOpenAccount } from "../state/use-open-account";
+import { useDeleteTransaction } from "../api/use-delete-transaction";
+import { useOpenTransaction } from "../state/use-open-transaction";
 
 type Props = {
   id: string;
 };
 
 export default function Actions({ id }: Props) {
-  const { onOpen } = useOpenAccount();
-  const { mutate: deleteAccount, isPending } = useDeleteAccount(id);
+  const { onOpen } = useOpenTransaction();
+  const { mutate: deleteTransaction, isPending } = useDeleteTransaction(id);
   const [ConfirmDialog, confirm] = useConfirm();
 
   const handleDelete = async () => {
@@ -25,7 +25,7 @@ export default function Actions({ id }: Props) {
       message: "You are about deleting this account.",
     });
     if (ok) {
-      deleteAccount();
+      deleteTransaction();
     }
   };
 

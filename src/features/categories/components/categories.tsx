@@ -12,7 +12,7 @@ import { Loader2, Plus } from "lucide-react";
 import { useBulkDeleteCategories } from "../api/use-bulk-delete-categories";
 import { useGetCategoris } from "../api/use-get-categories";
 import { useNewCategory } from "../state/use-new-category";
-import { columns } from "./columns";
+import { categoriesColumns } from "./categories-columns";
 
 export default function Categories() {
   const { onOpen } = useNewCategory();
@@ -63,7 +63,7 @@ export default function Categories() {
               title: "Are You Sure?",
               message: "You are about to delete this category.",
             }}
-            columns={columns}
+            columns={categoriesColumns}
             data={categories}
           />
         </CardContent>

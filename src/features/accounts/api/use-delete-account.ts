@@ -19,8 +19,9 @@ export function useDeleteAccount(id?: string) {
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["account", id] });
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
       toast.success("Account Deleted");
-      // todo: update summary and transactions
+      // todo: update summary
     },
     onError: (err) => {
       console.error(err);

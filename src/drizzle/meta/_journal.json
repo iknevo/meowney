@@ -43,6 +43,13 @@
       "when": 1754843983435,
       "tag": "0005_shiny_wendigo",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1755112376731,
+      "tag": "0006_lumpy_luminals",
+      "breakpoints": true
     }
   ]
 }

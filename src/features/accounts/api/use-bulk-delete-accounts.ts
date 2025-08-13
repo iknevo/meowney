@@ -20,6 +20,7 @@ export function useBulkDeleteAccounts() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
       toast.success("Accounts Deleted");
       // todo: also validate summary
     },

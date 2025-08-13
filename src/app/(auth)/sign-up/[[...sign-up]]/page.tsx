@@ -13,7 +13,7 @@ export default function Page() {
           <SignUp />
         </ClerkLoaded>
         <ClerkLoading>
-          <Loader2 className="text-muted-foreground h-10 w-10 animate-spin" />
+          <Loader2 className="text-muted-foreground size-10 animate-spin" />
         </ClerkLoading>
       </div>
       <div className="hidden items-center justify-center bg-slate-950 lg:flex">

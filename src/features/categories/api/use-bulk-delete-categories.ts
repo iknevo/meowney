@@ -20,6 +20,7 @@ export function useBulkDeleteCategories() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
       toast.success("Categories Deleted");
       // todo: also validate summary
     },

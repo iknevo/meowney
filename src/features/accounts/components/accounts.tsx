@@ -10,9 +10,9 @@ import {
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { useBulkDeleteAccounts } from "@/src/features/accounts/api/use-bulk-delete-accounts";
 import { useGetAccounts } from "@/src/features/accounts/api/use-get-accounts";
-import { columns } from "@/src/features/accounts/components/columns";
 import { useNewAccount } from "@/src/features/accounts/state/use-new-account";
 import { Loader2, Plus } from "lucide-react";
+import { accountColumns } from "./account-columns";
 
 export default function Accounts() {
   const { onOpen } = useNewAccount();
@@ -61,7 +61,7 @@ export default function Accounts() {
               title: "Are you sure?",
               message: "You are about to delete this account(s).",
             }}
-            columns={columns}
+            columns={accountColumns}
             data={accounts}
           />
         </CardContent>

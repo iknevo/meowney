@@ -8,22 +8,22 @@ import {
   CardTitle,
 } from "@/src/components/ui/card";
 import { Skeleton } from "@/src/components/ui/skeleton";
-import { useBulkDeleteAccounts } from "@/src/features/accounts/api/use-bulk-delete-accounts";
-import { useGetAccounts } from "@/src/features/accounts/api/use-get-accounts";
-import { columns } from "@/src/features/accounts/components/columns";
-import { useNewAccount } from "@/src/features/accounts/state/use-new-account";
 import { Loader2, Plus } from "lucide-react";
+import { useBulkDeleteTransactions } from "../api/use-bulk-delete-transactions";
+import { useGetTransactions } from "../api/use-get-transactions";
+import { useNewTransaction } from "../state/use-new-transaction";
+import { transactionsColumns } from "./transactions-columns";
 
-export default function Accounts() {
-  const { onOpen } = useNewAccount();
-  const { data: accounts = [], isLoading: isLoadingAccounts } =
-    useGetAccounts();
+export default function Transactions() {
+  const { onOpen } = useNewTransaction();
+  const { data: transactions = [], isLoading: isLoadingTransactions } =
+    useGetTransactions();
 
-  const { mutate: deleteAccounts, isPending: isDeletingAccounts } =
-    useBulkDeleteAccounts();
-  const isDisabled = isLoadingAccounts || isDeletingAccounts;
+  const { mutate: deleteTransactions, isPending: isDeletingTransactions } =
+    useBulkDeleteTransactions();
+  const isDisabled = isLoadingTransactions || isDeletingTransactions;
 
-  if (isLoadingAccounts)
+  if (isLoadingTransactions)
     return (
       <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
         <Card className="border-none drop-shadow-xs">
@@ -43,7 +43,9 @@ export default function Accounts() {
     <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
       <Card className="border-none drop-shadow-xs">
         <CardHeader className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-          <CardTitle className="line-clamp-1 text-xl">Accounts page</CardTitle>
+          <CardTitle className="line-clamp-1 text-xl">
+            Transactions History
+          </CardTitle>
           <Button onClick={onOpen} className="self-stretch lg:self-auto">
             <Plus className="size-4" />
             <span>Add New</span>
@@ -51,18 +53,18 @@ export default function Accounts() {
         </CardHeader>
         <CardContent>
           <DataTable
-            filterKey="name"
+            filterKey="payee"
             disabled={isDisabled}
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
-              deleteAccounts({ ids });
+              deleteTransactions({ ids });
             }}
             confirmOptions={{
               title: "Are you sure?",
-              message: "You are about to delete this account(s).",
+              message: "You are about to delete this transaction(s).",
             }}
-            columns={columns}
-            data={accounts}
+            columns={transactionsColumns}
+            data={transactions}
           />
         </CardContent>
       </Card>
