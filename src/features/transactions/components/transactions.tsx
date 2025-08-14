@@ -8,10 +8,14 @@ import {
   CardTitle,
 } from "@/src/components/ui/card";
 import { Skeleton } from "@/src/components/ui/skeleton";
+import { transactions as transactionsSchema } from "@/src/db/schema";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
+import { useBulkCreateTransactions } from "../api/use-bulk-create-transactions";
 import { useBulkDeleteTransactions } from "../api/use-bulk-delete-transactions";
 import { useGetTransactions } from "../api/use-get-transactions";
+import useSelectAccount from "../hooks/use-select-account";
 import { useNewTransaction } from "../state/use-new-transaction";
 import ImportCard from "./import-card";
 import { transactionsColumns } from "./transactions-columns";
@@ -29,6 +33,7 @@ const INITIAL_IMPORT_RESULTS = {
 };
 
 export default function Transactions() {
+  const [AccountDialog, confirm] = useSelectAccount();
   const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST);
   const [importResults, setImportResults] = useState(INITIAL_IMPORT_RESULTS);
 
@@ -49,7 +54,26 @@ export default function Transactions() {
 
   const { mutate: deleteTransactions, isPending: isDeletingTransactions } =
     useBulkDeleteTransactions();
-  const isDisabled = isLoadingTransactions || isDeletingTransactions;
+  const { mutate: createTransactions, isPending: isCreatingTransactions } =
+    useBulkCreateTransactions();
+  const isDisabled =
+    isLoadingTransactions || isDeletingTransactions || isCreatingTransactions;
+
+  const onSubmitImport = async (
+    values: (typeof transactionsSchema.$inferInsert)[],
+  ) => {
+    const accountId = await confirm();
+    if (!accountId) return toast.error("Please select an account to continue.");
+    const data = values.map((value) => ({
+      ...value,
+      accountId: accountId as string,
+    }));
+    createTransactions(data, {
+      onSuccess: () => {
+        onCancelImport();
+      },
+    });
+  };
 
   if (isLoadingTransactions) {
     return (
@@ -71,14 +95,16 @@ export default function Transactions() {
   if (variant === VARIANTS.IMPORT) {
     return (
       <>
+        <AccountDialog />
         <ImportCard
           data={importResults.data}
           onCancel={onCancelImport}
-          onSubmit={() => {}}
+          onSubmit={onSubmitImport}
         />
       </>
     );
   }
+
   return (
     <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
       <Card className="border-none drop-shadow-xs">
