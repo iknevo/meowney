@@ -22,7 +22,7 @@ export default function Actions({ id }: Props) {
   const handleDelete = async () => {
     const ok = await confirm({
       title: "Are You Sure?",
-      message: "You are about deleting this account.",
+      message: "You are about deleting this transaction.",
     });
     if (ok) {
       deleteTransaction();

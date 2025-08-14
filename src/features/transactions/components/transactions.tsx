@@ -9,12 +9,40 @@ import {
 } from "@/src/components/ui/card";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Loader2, Plus } from "lucide-react";
+import { useState } from "react";
 import { useBulkDeleteTransactions } from "../api/use-bulk-delete-transactions";
 import { useGetTransactions } from "../api/use-get-transactions";
 import { useNewTransaction } from "../state/use-new-transaction";
+import ImportCard from "./import-card";
 import { transactionsColumns } from "./transactions-columns";
+import UploadButton from "./upload-button";
+
+enum VARIANTS {
+  LIST = "LIST",
+  IMPORT = "IMPORT",
+}
+
+const INITIAL_IMPORT_RESULTS = {
+  data: [],
+  errors: [],
+  meta: {},
+};
 
 export default function Transactions() {
+  const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST);
+  const [importResults, setImportResults] = useState(INITIAL_IMPORT_RESULTS);
+
+  const onUpload = (results: typeof INITIAL_IMPORT_RESULTS) => {
+    console.log(results);
+    setImportResults(results);
+    setVariant(VARIANTS.IMPORT);
+  };
+
+  const onCancelImport = () => {
+    setImportResults(INITIAL_IMPORT_RESULTS);
+    setVariant(VARIANTS.LIST);
+  };
+
   const { onOpen } = useNewTransaction();
   const { data: transactions = [], isLoading: isLoadingTransactions } =
     useGetTransactions();
@@ -23,7 +51,7 @@ export default function Transactions() {
     useBulkDeleteTransactions();
   const isDisabled = isLoadingTransactions || isDeletingTransactions;
 
-  if (isLoadingTransactions)
+  if (isLoadingTransactions) {
     return (
       <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
         <Card className="border-none drop-shadow-xs">
@@ -38,7 +66,19 @@ export default function Transactions() {
         </Card>
       </div>
     );
+  }
 
+  if (variant === VARIANTS.IMPORT) {
+    return (
+      <>
+        <ImportCard
+          data={importResults.data}
+          onCancel={onCancelImport}
+          onSubmit={() => {}}
+        />
+      </>
+    );
+  }
   return (
     <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
       <Card className="border-none drop-shadow-xs">
@@ -46,10 +86,13 @@ export default function Transactions() {
           <CardTitle className="line-clamp-1 text-xl">
             Transactions History
           </CardTitle>
-          <Button onClick={onOpen} className="self-stretch lg:self-auto">
-            <Plus className="size-4" />
-            <span>Add New</span>
-          </Button>
+          <div className="flex flex-col gap-2 self-stretch lg:flex-row lg:items-center">
+            <Button size={"sm"} onClick={onOpen}>
+              <Plus className="size-4" />
+              <span>Add New</span>
+            </Button>
+            <UploadButton onUpload={onUpload} />
+          </div>
         </CardHeader>
         <CardContent>
           <DataTable
