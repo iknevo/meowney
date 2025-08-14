@@ -9,8 +9,8 @@ import {
   DialogTitle,
 } from "@/src/components/ui/dialog";
 import { JSX, useRef, useState } from "react";
-import { useCreateAccount } from "../../accounts/api/use-create-account";
-import { useGetAccounts } from "../../accounts/api/use-get-accounts";
+import { useCreateAccount } from "../api/use-create-account";
+import { useGetAccounts } from "../api/use-get-accounts";
 
 export default function useSelectAccount(): [
   () => JSX.Element,

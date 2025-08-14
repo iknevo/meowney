@@ -9,13 +9,13 @@ import {
 } from "@/src/components/ui/card";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { transactions as transactionsSchema } from "@/src/db/schema";
+import useSelectAccount from "@/src/features/accounts/hooks/use-select-account";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useBulkCreateTransactions } from "../api/use-bulk-create-transactions";
 import { useBulkDeleteTransactions } from "../api/use-bulk-delete-transactions";
 import { useGetTransactions } from "../api/use-get-transactions";
-import useSelectAccount from "../hooks/use-select-account";
 import { useNewTransaction } from "../state/use-new-transaction";
 import ImportCard from "./import-card";
 import { transactionsColumns } from "./transactions-columns";
