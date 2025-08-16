@@ -13,6 +13,7 @@ import useSelectAccount from "@/src/features/accounts/hooks/use-select-account";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import SelectAccountDialog from "../../accounts/components/select-account-dialog";
 import { useBulkCreateTransactions } from "../api/use-bulk-create-transactions";
 import { useBulkDeleteTransactions } from "../api/use-bulk-delete-transactions";
 import { useGetTransactions } from "../api/use-get-transactions";
@@ -33,12 +34,11 @@ const INITIAL_IMPORT_RESULTS = {
 };
 
 export default function Transactions() {
-  const [AccountDialog, confirm] = useSelectAccount();
+  const selectAccountProps = useSelectAccount();
   const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST);
   const [importResults, setImportResults] = useState(INITIAL_IMPORT_RESULTS);
 
   const onUpload = (results: typeof INITIAL_IMPORT_RESULTS) => {
-    console.log(results);
     setImportResults(results);
     setVariant(VARIANTS.IMPORT);
   };
@@ -62,11 +62,11 @@ export default function Transactions() {
   const onSubmitImport = async (
     values: (typeof transactionsSchema.$inferInsert)[],
   ) => {
-    const accountId = await confirm();
+    const accountId = await selectAccountProps.confirm();
     if (!accountId) return toast.error("Please select an account to continue.");
     const data = values.map((value) => ({
       ...value,
-      accountId: accountId as string,
+      accountId: accountId,
     }));
     createTransactions(data, {
       onSuccess: () => {
@@ -95,7 +95,7 @@ export default function Transactions() {
   if (variant === VARIANTS.IMPORT) {
     return (
       <>
-        <AccountDialog />
+        <SelectAccountDialog selectAccountProps={selectAccountProps} />
         <ImportCard
           data={importResults.data}
           onCancel={onCancelImport}
