@@ -55,7 +55,7 @@ export const transactionsColumns: ColumnDef<ResponseType>[] = [
     },
     cell: ({ row }) => {
       const date = row.getValue("date") as Date;
-      return <span>{format(date, "yyyy-MM-dd")}</span>;
+      return <span>{format(date, "dd MMMM, yyyy")}</span>;
     },
   },
   {
