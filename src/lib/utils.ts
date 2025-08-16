@@ -20,3 +20,14 @@ export function convertAmountToMiliunits(amount: number) {
 export function convertAmountFromMiliunits(amount: number) {
   return amount / 1000;
 }
+
+export function normalizeKeys<T extends Record<string, any>>(data: T[]) {
+  return data.map((item) =>
+    Object.fromEntries(
+      Object.entries(item).map(([key, value]) => [
+        key.toLowerCase().split(" ").join("_"),
+        value,
+      ]),
+    ),
+  );
+}

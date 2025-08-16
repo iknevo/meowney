@@ -8,9 +8,21 @@ import {
 } from "@/src/components/ui/table";
 import TableHeadSelect from "./table-head-select";
 
+type BodyItem = {
+  amount: string;
+  balance: string;
+  completed_date: string;
+  currency: string;
+  description: string;
+  fee: string;
+  product: string;
+  started_date: string;
+  state: string;
+  type: string;
+};
 type Props = {
   headers: string[];
-  body: string[][];
+  body: BodyItem[];
   selectedColumns: Record<string, string | null>;
   onTableHeadChange: (columnIndex: number, value: string | null) => void;
 };
@@ -38,9 +50,9 @@ export default function ImportTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {body.map((row: string[], index) => (
+          {body.map((item, index) => (
             <TableRow key={index}>
-              {row.map((cell, index) => (
+              {Object.values(item).map((cell, index) => (
                 <TableCell key={index}>{cell}</TableCell>
               ))}
             </TableRow>

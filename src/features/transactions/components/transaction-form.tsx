@@ -57,7 +57,6 @@ export default function TransactionForm({
   categoryOptions,
   onCreateCategory,
 }: Props) {
-  console.log(defaultValues, "de");
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues,

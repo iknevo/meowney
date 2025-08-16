@@ -18,8 +18,21 @@ const requiredOptions = ["amount", "date", "payee"];
 
 type SelectedColumnsState = Record<string, string | null>;
 
+type BodyItem = {
+  amount: string;
+  balance: string;
+  completed_date: string;
+  currency: string;
+  description: string;
+  fee: string;
+  product: string;
+  started_date: string;
+  state: string;
+  type: string;
+};
+
 type Props = {
-  data: string[][];
+  data: BodyItem[];
   onCancel: () => void;
   onSubmit: (data: any) => void;
 };
@@ -28,8 +41,7 @@ export default function ImportCard({ data, onCancel, onSubmit }: Props) {
   const [selectedColumns, setSelectedColumns] = useState<SelectedColumnsState>(
     {},
   );
-  const headers = data[0];
-  const body = data.slice(1);
+  const headers = Object.keys(data[0]);
   const onTableHeadSelectChange = (
     columnIndex: number,
     value: string | null,
@@ -54,23 +66,20 @@ export default function ImportCard({ data, onCancel, onSubmit }: Props) {
     const getColumnIndex = (column: string) => {
       return column.split("_")[1];
     };
+
     const mappedDate = {
       headers: headers.map((_header, index) => {
         const colIndex = getColumnIndex(`column_${index}`);
         return selectedColumns[`column_${colIndex}`] || null;
       }),
-      body: body
-        .map((row) => {
-          const transformedRow = row.map((cell, index) => {
-            const colIndex = getColumnIndex(`column_${index}`);
-            return selectedColumns[`column_${colIndex}`] ? cell : null;
-          });
-          return transformedRow.every((item) => item === null)
-            ? []
-            : transformedRow;
-        })
-        .filter((row) => row.length > 0),
+      body: data.map((row) => {
+        return Object.entries(row).map((item, index) => {
+          const columnIndex = getColumnIndex(`column_${index}`);
+          return selectedColumns[`column_${columnIndex}`] ? item[1] : null;
+        });
+      }),
     };
+
     const dataArr = mappedDate.body.map((row) => {
       return row.reduce((acc: any, cell, index) => {
         const header = mappedDate.headers[index];
@@ -78,6 +87,7 @@ export default function ImportCard({ data, onCancel, onSubmit }: Props) {
         return acc;
       }, {});
     });
+
     const formattedDataArr = dataArr.map((item) => {
       return {
         ...item,
@@ -92,8 +102,11 @@ export default function ImportCard({ data, onCancel, onSubmit }: Props) {
     <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
       <Card className="border-none drop-shadow-xs">
         <CardHeader className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-          <CardTitle className="line-clamp-1 text-xl">
-            Import Transactions
+          <CardTitle className="mb-2 flex flex-col gap-2 lg:mb-0">
+            <span className="text-xl">Import Transactions</span>
+            <span className="text-muted-foreground text-xs lg:text-sm">
+              Select Transaction&apos;s Date, Payee and amount...
+            </span>
           </CardTitle>
           <div className="flex flex-col gap-2 self-stretch lg:flex-row lg:items-center">
             <Button
@@ -111,7 +124,7 @@ export default function ImportCard({ data, onCancel, onSubmit }: Props) {
         <CardContent>
           <ImportTable
             headers={headers}
-            body={body}
+            body={data}
             selectedColumns={selectedColumns}
             onTableHeadChange={onTableHeadSelectChange}
           />
