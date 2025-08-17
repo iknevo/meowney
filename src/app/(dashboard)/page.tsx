@@ -1,12 +1,9 @@
-"use client";
-import { Button } from "@/src/components/ui/button";
-import { useNewAccount } from "@/src/features/accounts/state/use-new-account";
+import Dashboard from "@/src/features/dashboard/dashboard";
 
-export default function Home() {
-  const { onOpen } = useNewAccount();
-  return (
-    <div>
-      <Button onClick={onOpen}>open sheet</Button>
-    </div>
-  );
+export const metadata = {
+  title: "Dashboard",
+};
+
+export default function DashboardPage() {
+  return <Dashboard />;
 }
