@@ -2,6 +2,7 @@ import Accounts from "@/src/features/accounts/components/accounts";
 import { Loader2 } from "lucide-react";
 import { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Accounts",
 };
