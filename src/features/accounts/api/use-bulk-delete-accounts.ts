@@ -21,8 +21,8 @@ export function useBulkDeleteAccounts() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
       toast.success("Accounts Deleted");
-      // todo: also validate summary
     },
     onError: (err) => {
       console.error(err);

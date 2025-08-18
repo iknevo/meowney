@@ -20,8 +20,8 @@ export function useBulkDeleteTransactions() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
       toast.success("Transactions Deleted");
-      // todo: also validate summary
     },
     onError: (err) => {
       console.error(err);

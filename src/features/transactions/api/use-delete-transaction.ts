@@ -19,8 +19,8 @@ export function useDeleteTransaction(id?: string) {
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["transaction", id] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
       toast.success("Transaction Deleted");
-      // todo: update summary and transactions
     },
     onError: (err) => {
       console.error(err);

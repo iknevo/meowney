@@ -20,8 +20,8 @@ export function useBulkCreateTransactions() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
       toast.success("Transactions created");
-      // todo: also validate summary
     },
     onError: (err) => {
       console.error(err);
