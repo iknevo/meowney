@@ -12,12 +12,17 @@ import {
   SelectValue,
 } from "./ui/select";
 
+enum CHART_TYPES {
+  LINE = "LINE",
+  BAR = "BAR",
+  AREA = "AREA",
+}
 type Props = {
   data?: { date: string; income: number; expenses: number }[];
 };
 export default function Chart({ data = [] }: Props) {
-  const [chartType, setChartType] = useState("area");
-  const onTypeChange = (type: string) => {
+  const [chartType, setChartType] = useState<CHART_TYPES>(CHART_TYPES.AREA);
+  const onTypeChange = (type: CHART_TYPES) => {
     setChartType(type);
     // todo: add paywall
   };
@@ -30,19 +35,19 @@ export default function Chart({ data = [] }: Props) {
             <SelectValue placeholder="Chart Type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="area">
+            <SelectItem value={CHART_TYPES.AREA}>
               <div className="flex items-center gap-2">
                 <AreaChart className="size-4 shrink-0" />
                 <p className="line-clamp-1">Area Chart</p>
               </div>
             </SelectItem>
-            <SelectItem value="line">
+            <SelectItem value={CHART_TYPES.LINE}>
               <div className="flex items-center gap-2">
                 <LineChart className="size-4 shrink-0" />
                 <p className="line-clamp-1">Line Chart</p>
               </div>
             </SelectItem>
-            <SelectItem value="bar">
+            <SelectItem value={CHART_TYPES.BAR}>
               <div className="flex items-center gap-2">
                 <BarChart3 className="size-4 shrink-0" />
                 <p className="line-clamp-1">Bar Chart</p>
@@ -61,9 +66,9 @@ export default function Chart({ data = [] }: Props) {
           </div>
         ) : (
           <>
-            {chartType === "line" && <LineVariant data={data} />}
-            {chartType === "bar" && <BarVariant data={data} />}
-            {chartType === "area" && <AreaVariant data={data} />}
+            {chartType === CHART_TYPES.LINE && <LineVariant data={data} />}
+            {chartType === CHART_TYPES.BAR && <BarVariant data={data} />}
+            {chartType === CHART_TYPES.AREA && <AreaVariant data={data} />}
           </>
         )}
       </CardContent>
