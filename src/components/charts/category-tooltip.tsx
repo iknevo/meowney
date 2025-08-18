@@ -1,5 +1,5 @@
 import { Separator } from "@/src/components/ui/separator";
-import { formatCurrency } from "../lib/utils";
+import { formatCurrency } from "@/src/lib/utils";
 
 export default function CategoryTooltip({ active, payload }: any) {
   if (!active) return null;

@@ -1,8 +1,8 @@
 import HeaderLogo from "@/src/components/header-logo";
 import Navigation from "@/src/components/navigation";
+import WelcomeMsg from "@/src/components/welcome-msg";
 import { ClerkLoaded, ClerkLoading, UserButton } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
-import WelcomeMsg from "./welcome-msg";
 
 export default function Header() {
   return (

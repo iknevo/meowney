@@ -1,3 +1,4 @@
+import CustomTooltip from "@/src/components/charts/custom-tooltip";
 import { format } from "date-fns";
 import {
   Area,
@@ -7,7 +8,6 @@ import {
   Tooltip,
   XAxis,
 } from "recharts";
-import CustomTooltip from "./custom-tooltip";
 
 type Props = {
   data: {

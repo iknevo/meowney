@@ -1,16 +1,22 @@
-import { FileSearch, PieChart, Radar, Target } from "lucide-react";
-import { useState } from "react";
-import PieVariant from "./pie-variant";
-import RadarVariant from "./radar-variant";
-import RadialVariant from "./radial-variant";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import PieVariant from "@/src/components/charts/pie-variant";
+import RadarVariant from "@/src/components/charts/radar-variant";
+import RadialVariant from "@/src/components/charts/radial-variant";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/src/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "@/src/components/ui/select";
+import { Skeleton } from "@/src/components/ui/skeleton";
+import { FileSearch, Loader2, PieChart, Radar, Target } from "lucide-react";
+import { useState } from "react";
 
 enum CHART_TYPES {
   PIE = "PIE",
@@ -71,6 +77,22 @@ export default function SpendingPie({ data = [] }: Props) {
             {chartType === CHART_TYPES.RADIAL && <RadialVariant data={data} />}
           </>
         )}
+      </CardContent>
+    </Card>
+  );
+}
+
+export function SpendingPieLoading() {
+  return (
+    <Card className="border-none drop-shadow-sm">
+      <CardHeader className="flex justify-between space-y-2 lg:flex-row lg:items-center lg:space-y-0">
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-8 w-full lg:w-[120px]" />
+      </CardHeader>
+      <CardContent>
+        <div className="flex h-[350px] w-full items-center justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-slate-300" />
+        </div>
       </CardContent>
     </Card>
   );

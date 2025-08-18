@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from "recharts";
 
-import CategoryTooltip from "@/src/components/category-tooltip";
+import CategoryTooltip from "@/src/components/charts/category-tooltip";
 import { formatPercentage } from "@/src/lib/utils";
 
 const COLORS = ["#0062FF", "#12C6FF", "#FF647F", "#FF9354"];

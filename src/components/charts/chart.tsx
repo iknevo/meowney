@@ -1,16 +1,21 @@
-import { AreaChart, BarChart3, FileSearch, LineChart } from "lucide-react";
-import { useState } from "react";
-import AreaVariant from "./area-variant";
-import BarVariant from "./bar-variant";
-import LineVariant from "./line-variant";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import AreaVariant from "@/src/components/charts/area-variant";
+import BarVariant from "@/src/components/charts/bar-variant";
+import LineVariant from "@/src/components/charts/line-variant";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/src/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "@/src/components/ui/select";
+import { AreaChart, BarChart3, FileSearch, LineChart } from "lucide-react";
+import { useState } from "react";
 
 enum CHART_TYPES {
   LINE = "LINE",

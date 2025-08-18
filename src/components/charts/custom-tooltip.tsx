@@ -1,6 +1,6 @@
 import { Separator } from "@/src/components/ui/separator";
+import { formatCurrency } from "@/src/lib/utils";
 import { format } from "date-fns";
-import { formatCurrency } from "../lib/utils";
 
 export default function CustomTooltip({ active, payload }: any) {
   if (!active) return null;

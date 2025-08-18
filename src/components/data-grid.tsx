@@ -1,10 +1,10 @@
 "use client";
+import DataCard, { DataCardLoading } from "@/src/components/data-card";
 import { useGetSummary } from "@/src/features/summary/api/use-get-summary";
 import { formatDateRange } from "@/src/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { FaPiggyBank } from "react-icons/fa";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
-import DataCard, { DataCardLoading } from "./data-card";
 
 export default function DataGrid() {
   const { data, isLoading } = useGetSummary();
