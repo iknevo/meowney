@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Meowney
 
-## Getting Started
+Meowney is a personal finance dashboard for managing accounts, categories, and transactions. It turns imported transaction data into filterable summaries and charts while keeping the underlying records editable and organized.
 
-First, run the development server:
+Live demo: [meowney.vercel.app](https://meowney.vercel.app/)
+
+## Features
+
+- Authenticated user accounts with Clerk
+- Dashboard summary by date range and account
+- Multiple chart views for income, expenses, and category breakdowns
+- Account CRUD with bulk deletion
+- Category CRUD with bulk deletion
+- Transaction CRUD with sorting, search, pagination, and row selection
+- CSV transaction import with preview before insertion
+- Bulk transaction deletion
+- Profile and account settings
+- Responsive interface with light/dark theme support
+
+## Tech stack
+
+| Area | Technology |
+| --- | --- |
+| Framework | Next.js 15 App Router and React 19 |
+| API | Hono with Zod validation |
+| Database | Neon Postgres with Drizzle ORM |
+| Authentication | Clerk |
+| Data fetching | TanStack Query |
+| UI | Tailwind CSS, shadcn/ui, Radix UI |
+| Charts | Recharts |
+| Client state | Zustand |
+| Package manager | Bun |
+
+## Getting started
+
+### Prerequisites
+
+- Node.js 20 or newer
+- [Bun](https://bun.sh/)
+- A Clerk application
+- A PostgreSQL database, such as [Neon](https://neon.tech/)
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/iknevo/meowney.git
+cd meowney
+bun install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a `.env.local` file with the variables below, then run the database migration and seed scripts:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bun run db:migrate
+bun run db:seed
+bun run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+## Environment variables
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Purpose |
+| --- | --- |
+| `DATABASE_URL` | Neon/PostgreSQL connection string used by Drizzle and migration scripts |
+| `NEXT_PUBLIC_APP_URL` | Public URL used by the Hono client |
+| Clerk variables | Configure the Clerk keys required by `@clerk/nextjs` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Do not commit `.env.local` or database credentials. Configure the Clerk sign-in/sign-up URLs and redirect behavior in the Clerk dashboard for the environment being used.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Available scripts
 
-## Deploy on Vercel
+| Command | Description |
+| --- | --- |
+| `bun run dev` | Start Next.js with Turbopack |
+| `bun run build` | Create a production build |
+| `bun run start` | Start the production server |
+| `bun run lint` | Run ESLint |
+| `bun run db:generate` | Generate Drizzle migrations from the schema |
+| `bun run db:migrate` | Apply migrations to the database |
+| `bun run db:seed` | Seed initial account/category data |
+| `bun run db:studio` | Open Drizzle Studio |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```text
+src/
+├── app/
+│   ├── (auth)/           # Clerk authentication pages
+│   ├── (dashboard)/      # Dashboard, accounts, categories, transactions, settings
+│   └── api/              # Hono API routes
+├── components/           # Shared UI and data-display components
+├── db/                   # Drizzle schema, migrations, and seed scripts
+├── features/
+│   ├── accounts/         # Account CRUD and selection
+│   ├── categories/       # Category CRUD
+│   ├── dashboard/        # Summary dashboard and charts
+│   ├── summary/          # Aggregated financial data
+│   └── transactions/     # Transaction CRUD and CSV import
+└── providers/            # Query, auth, and sheet providers
+```
+
+## Architecture notes
+
+The Next.js UI consumes typed Hono endpoints through TanStack Query. Drizzle defines the relational data model and generates migrations, while feature modules keep CRUD operations, forms, tables, and query hooks close to the domain they serve. CSV imports are previewed in the transaction feature before bulk insertion.
+
+## Deployment
+
+Meowney can be deployed to Vercel with Neon Postgres:
+
+1. Configure `DATABASE_URL`, `NEXT_PUBLIC_APP_URL`, and Clerk settings.
+2. Apply migrations with `bun run db:migrate`.
+3. Seed the database if starting a new environment.
+4. Build with `bun run build` and deploy.
+
+## License
+
+No license file is currently included in the repository.
